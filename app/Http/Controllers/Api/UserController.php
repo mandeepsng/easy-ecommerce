@@ -23,13 +23,13 @@ class UserController extends Controller
             'password' => 'required',
         ]);
         if ($validate->fails()){
-            return response()->isClientError([
+            return response()->json([
                 'validation_errors' => $validate->messages()
             ]);
         }
 
         if (!filter_var($request->email, FILTER_VALIDATE_EMAIL)) {
-            return response()->isClientError([
+            return response()->json([
                 'message' => __('invalid Email'),
             ]);
         }
@@ -37,13 +37,13 @@ class UserController extends Controller
         $user = User::select('id', 'email', 'password')->where('email', $request->email)->first();
 
         if (!$user || !Hash::check($request->password, $user->password)) {
-            return response()->isClientError([
+            return response()->json([
                 'message' => __('Invalid Email or Password')
             ]);
         } else {
 //            $token = $user->createToken(Str::slug(get_static_option('Project247', 'ecommerce')) . 'api_keys')->plainTextToken;
             $token = $user->createToken('dsfsdf')->plainTextToken;
-            return response()->isSuccessful([
+            return response()->json([
                 'users' => $user,
                 'token' => $token,
             ]);
