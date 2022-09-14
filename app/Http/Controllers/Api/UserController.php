@@ -24,7 +24,7 @@ class UserController extends Controller
         ]);
         if ($validate->fails()){
             return response()->json([
-                'validation_errors' => $validate->messages()
+                'validation_error' => $validate->messages()
             ]);
         }
 
